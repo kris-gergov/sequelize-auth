@@ -4,7 +4,9 @@ import environment from '../config/environment';
 
 export default (sequelize) => {
     class User extends Model {
-        static associate(models) {}
+        static associate(models) {
+            User.hasMany(models['Role']);
+        }
 
         static async hashPassword(password) {
             return bcrypt.hash(password, environment.saltRounds);
