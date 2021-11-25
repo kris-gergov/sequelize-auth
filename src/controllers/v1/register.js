@@ -19,16 +19,16 @@ router.post(
         try {
             const newUser = await User.create({ email, password });
             const jwtPayload = { email };
-            const accessToken = generateAccessToken(payload);
-            const refreshToken = generateRefreshToken(payload);
+            const accessToken = generateAccessToken(jwtPayload);
+            const refreshToken = generateRefreshToken(jwtPayload);
             await newUser.createRefreshToken({ token: refreshToken });
 
             if (roles && Array.isArray(roles)) {
                 const rolesToSave = [];
-                roles.forEach((role) => {
+                for (const role of roles) {
                     const newRole = await Role.create({ role });
                     rolesToSave.push(newRole);
-                });
+                }
                 await newUser.addRoles(rolesToSave);
             }
 
